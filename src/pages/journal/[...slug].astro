@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('journal');
+  return entries.map(entry => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+  }).toLowerCase();
+---
+
+<BaseLayout title={`${entry.data.title} — UToledo Swim Club`} current="journal">
+
+  <article class="block prose">
+    <div class="entry-meta">
+      {entry.data.week && <span class="entry-meta__week">week {entry.data.week}</span>}
+      <span class="entry-meta__date">{fmt(entry.data.date)}</span>
+      <span class="entry-meta__author">by {entry.data.author}</span>
+    </div>
+
+    <h1 class="entry-title">{entry.data.title}</h1>
+
+    <Content />
+
+    <hr />
+    <p class="entry-back"><a href="/journal">&larr; back to the journal</a></p>
+  </article>
+
+</BaseLayout>
+
+<style>
+  .entry-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--navy-deep);
+    margin-bottom: 8px;
+  }
+  .entry-meta__week {
+    background: var(--gold);
+    color: var(--navy-deep);
+    padding: 1px 6px;
+    font-weight: 500;
+  }
+  .entry-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 28px;
+    margin: 0 0 16px;
+    color: var(--navy-deep);
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  .entry-back {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+</style>

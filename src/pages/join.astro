@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="join — UToledo Swim Club" current="join">
+
+  <div class="block">
+    <h1 class="display page-title">&gt;&gt; come join us &lt;&lt;</h1>
+    <p class="page-lede">
+      no tryouts. no cut times. no minimum speed. if you can get yourself down a lane, you can join.
+    </p>
+  </div>
+
+  <div class="block">
+    <h2 class="section-title">how it works</h2>
+    <ol class="join-steps">
+      <li><strong>show up to practice.</strong> mon / tues / thurs &middot; 7&ndash;8pm &middot; student rec center pool.</li>
+      <li><strong>bring:</strong> suit, goggles, cap (we have extras if you forget), towel.</li>
+      <li><strong>first practice is free.</strong> no commitment, just come try it.</li>
+      <li><strong>after that,</strong> register through InvoNet and pay the club dues ($ tbd per semester, covers pool time and travel).</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h2 class="section-title">frequently asked</h2>
+
+    <h3 class="faq__q">i haven't swum since high school / ever. is that okay?</h3>
+    <p class="faq__a">totally. we have swimmers at every level. come as you are.</p>
+
+    <h3 class="faq__q">do i have to compete?</h3>
+    <p class="faq__a">nope. meets are optional. some people only come for practice and team dinners, which is also a valid strategy.</p>
+
+    <h3 class="faq__q">can i still join mid-semester?</h3>
+    <p class="faq__a">yes. come whenever.</p>
+
+    <h3 class="faq__q">what should i expect at a first practice?</h3>
+    <p class="faq__a">low-key. warm up, some drills, a main set, warm down. maybe 2,000&ndash;3,000 yards total. you can skip sets if you need to.</p>
+  </div>
+
+  <div class="block block--navy text-center contact">
+    <h2 class="contact__title">reach out</h2>
+    <p style="margin:4px 0;"><a href="mailto:swimming@utoledo.edu" class="btn btn--gold">[ email us ]</a></p>
+    <p style="margin:4px 0;"><a href="https://instagram.com/swimclub_utoledo" target="_blank" rel="noopener" class="btn btn--pink">[ dm on instagram ]</a></p>
+    <p style="margin:4px 0;"><a href="https://invonet.utoledo.edu/organization/swim-club" target="_blank" rel="noopener" class="btn">[ find us on invonet ]</a></p>
+  </div>
+
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 28px;
+    color: var(--navy-deep);
+    margin: 0 0 6px;
+    letter-spacing: 2px;
+  }
+  .page-lede { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
+
+  .section-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    color: var(--navy-deep);
+    margin: 0 0 10px;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .join-steps {
+    margin: 0;
+    padding-left: 22px;
+  }
+  .join-steps li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .faq__q {
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--navy-deep);
+    margin: 12px 0 4px;
+  }
+  .faq__a {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .contact__title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+</style>

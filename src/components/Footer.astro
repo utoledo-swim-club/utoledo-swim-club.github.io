@@ -1,0 +1,42 @@
+---
+import Rocket from './icons/Rocket.astro';
+---
+
+<footer class="site-footer">
+  <div class="webring">
+    <Rocket size={14} variant="navy" class="rk-bob" />
+    <span class="webring__label">member of the college swim clubs webring</span>
+    <Rocket size={14} variant="navy" class="rk-bob" style="animation-delay: .5s" />
+    <span class="webring__nav">&lt; prev &middot; random &middot; next &gt;</span>
+  </div>
+  <div class="credit">
+    a site by joshua, for the swim club fam <span style="color:var(--pink)">&#9825;</span> est. 2026 &middot; made in toledo, oh
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 14px;
+  }
+  .webring {
+    background: var(--gold);
+    border: 2px solid var(--white);
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--navy-deep);
+    flex-wrap: wrap;
+  }
+  .webring__label { font-weight: 500; }
+  .credit {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 2px dashed var(--gold);
+    text-align: center;
+    font-size: 11px;
+    color: var(--cream);
+  }
+</style>

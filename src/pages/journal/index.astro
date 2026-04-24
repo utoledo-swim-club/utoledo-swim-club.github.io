@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('journal')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+  }).toLowerCase();
+---
+
+<BaseLayout title="journal — UToledo Swim Club" current="journal">
+
+  <div class="block">
+    <h1 class="display page-title">&gt;&gt; the journal &lt;&lt;</h1>
+    <p class="page-lede">
+      weekly recaps, team dinners, meet results, dumb stuff that happens at practice.
+      {entries.length} {entries.length === 1 ? 'entry' : 'entries'} so far.
+    </p>
+  </div>
+
+  <ul class="entry-list">
+    {entries.map(entry => (
+      <li class="entry-item block">
+        <div class="entry-item__meta">
+          {entry.data.week && <span class="entry-item__week">week {entry.data.week}</span>}
+          <span class="entry-item__date">{fmt(entry.data.date)}</span>
+        </div>
+        <h2 class="entry-item__title">
+          <a href={`/journal/${entry.id.replace(/\.md$/, '')}`}>{entry.data.title}</a>
+        </h2>
+        {entry.data.excerpt && (
+          <p class="entry-item__excerpt">{entry.data.excerpt}</p>
+        )}
+        <a href={`/journal/${entry.id.replace(/\.md$/, '')}`} class="btn btn--gold">[ read &rarr; ]</a>
+      </li>
+    ))}
+  </ul>
+
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 28px;
+    color: var(--navy-deep);
+    margin: 0 0 6px;
+    letter-spacing: 2px;
+  }
+  .page-lede {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+  }
+
+  .entry-item__meta {
+    font-size: 11px;
+    color: var(--navy-deep);
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .entry-item__week {
+    background: var(--gold);
+    color: var(--navy-deep);
+    padding: 1px 6px;
+    font-weight: 500;
+  }
+  .entry-item__title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 20px;
+    margin: 0 0 8px;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  .entry-item__title a {
+    color: var(--navy-deep);
+    text-decoration: none;
+  }
+  .entry-item__title a:hover {
+    background: var(--gold);
+  }
+  .entry-item__excerpt {
+    font-size: 13px;
+    margin: 0 0 10px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+</style>

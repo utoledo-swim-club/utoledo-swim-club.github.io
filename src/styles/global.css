@@ -1,0 +1,245 @@
+/* -------------------------------------------------
+   UToledo Swim Club — global styles
+   og internet / zine aesthetic
+   ------------------------------------------------- */
+
+:root {
+  /* palette */
+  --navy: #15397F;
+  --navy-deep: #0b2a5c;
+  --navy-light: #1e5aa8;
+  --gold: #FFD100;
+  --gold-light: #FFE766;
+  --cream: #f5ecd7;
+  --cream-deep: #e8dcbc;
+  --pink: #ff3b6b;
+  --white: #ffffff;
+  --ink: #0b2a5c;
+
+  /* layout */
+  --page-max: 900px;
+  --border-chunky: 4px;
+  --border-normal: 2px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Courier New", Courier, monospace;
+  background: var(--navy);
+  color: var(--cream);
+  min-height: 100vh;
+  /* subtle tiled wave pattern — repeating svg dataurl */
+  background-image:
+    linear-gradient(rgba(11,42,92,0.6), rgba(11,42,92,0.6)),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'><path d='M0 10 Q10 4 20 10 T40 10' fill='none' stroke='%230b2a5c' stroke-width='1'/></svg>");
+  background-attachment: fixed;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--pink); }
+a:visited { color: var(--gold-light); }
+
+.page {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.frame {
+  background: var(--navy);
+  border: var(--border-chunky) solid var(--gold);
+  padding: 14px;
+}
+
+.frame--tight { padding: 10px; }
+
+.block {
+  background: var(--cream);
+  color: var(--ink);
+  border: 3px solid var(--gold);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.block--navy {
+  background: var(--navy-deep);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.block--gold {
+  background: var(--gold);
+  color: var(--ink);
+  border: 2px solid var(--white);
+}
+
+.block--pink {
+  background: var(--pink);
+  color: var(--white);
+  border: 2px solid var(--gold);
+}
+
+.block--dashed {
+  background: var(--cream);
+  color: var(--ink);
+  border: 2px dashed var(--gold);
+  padding: 10px;
+}
+
+/* -------------------------------------------------
+   Typography
+   ------------------------------------------------- */
+
+.sparkle-title {
+  font-size: 11px;
+  color: var(--navy);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.display {
+  font-family: Impact, "Arial Black", "Helvetica Neue", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+.mono {
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* -------------------------------------------------
+   Chunky retro button
+   ------------------------------------------------- */
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  border: 2px outset var(--gold);
+  background: var(--navy-deep);
+  color: var(--gold);
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { color: var(--white); border-style: inset; }
+.btn:visited { color: var(--gold); }
+
+.btn--gold {
+  background: var(--gold);
+  color: var(--navy-deep);
+  border-color: var(--gold-light);
+}
+.btn--gold:hover { color: var(--navy-deep); }
+.btn--gold:visited { color: var(--navy-deep); }
+
+.btn--pink {
+  background: var(--pink);
+  color: var(--white);
+  border-color: #ff7a9e;
+}
+.btn--pink:hover { color: var(--white); }
+.btn--pink:visited { color: var(--white); }
+
+/* -------------------------------------------------
+   Animations
+   ------------------------------------------------- */
+
+@keyframes bob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes spin  { to { transform: rotate(360deg); } }
+@keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: .25; } }
+@keyframes streak { 0% { transform: translateX(-40px); } 100% { transform: translateX(calc(100vw + 40px)); } }
+@keyframes flame { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(.6); } }
+@keyframes wobble { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.rk-bob    { animation: bob 2s ease-in-out infinite; }
+.rk-spin   { animation: spin 3s linear infinite; transform-origin: center; }
+.rk-blink  { animation: blink 1s steps(1) infinite; }
+.rk-streak { animation: streak 9s linear infinite; }
+.rk-flame  { animation: flame .3s ease-in-out infinite; transform-origin: center top; }
+.rk-wobble { animation: wobble 1.4s ease-in-out infinite; display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-bob, .rk-spin, .rk-blink, .rk-streak, .rk-flame, .rk-wobble,
+  .marquee__track, .scrolling {
+    animation: none !important;
+  }
+}
+
+/* -------------------------------------------------
+   Markdown/journal prose
+   ------------------------------------------------- */
+
+.prose h1, .prose h2, .prose h3 {
+  font-family: Impact, "Arial Black", sans-serif;
+  color: var(--navy-deep);
+  letter-spacing: 1px;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
+}
+.prose h1 { font-size: 28px; }
+.prose h2 { font-size: 20px; border-bottom: 2px dashed var(--gold); padding-bottom: 4px; }
+.prose h3 { font-size: 16px; }
+
+.prose p, .prose li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.prose a { color: var(--navy-deep); text-decoration: underline; }
+.prose a:hover { background: var(--gold); }
+
+.prose code {
+  background: var(--navy-deep);
+  color: var(--gold);
+  padding: 1px 5px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+}
+
+.prose ul, .prose ol { padding-left: 22px; }
+.prose blockquote {
+  border-left: 4px solid var(--gold);
+  margin: 1em 0;
+  padding: 4px 12px;
+  background: rgba(255,209,0,0.1);
+}
+
+.prose img {
+  max-width: 100%;
+  border: 3px solid var(--gold);
+}
+
+.prose hr {
+  border: none;
+  border-top: 2px dashed var(--gold);
+  margin: 1.5em 0;
+}
+
+/* -------------------------------------------------
+   Utility
+   ------------------------------------------------- */
+
+.text-center { text-align: center; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.stack > * + * { margin-top: 10px; }

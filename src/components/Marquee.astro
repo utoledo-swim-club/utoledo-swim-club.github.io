@@ -1,0 +1,56 @@
+---
+interface Props {
+  latestTitle?: string;
+}
+const { latestTitle = '' } = Astro.props;
+
+// The marquee text repeats twice for a seamless infinite scroll.
+const base = [
+  'welcome swimmer',
+  'practice mon/tues/thurs 7\u20138pm',
+  latestTitle ? `\u2605 NEW \u2605 ${latestTitle}` : '\u2605 NEW \u2605 fresh journal entry',
+  'swimming@utoledo.edu',
+  'come say hi',
+];
+
+const item = base.join('  ::  ');
+---
+
+<div class="marquee block" role="status" aria-label="Site announcements">
+  <span class="rk-wobble" style="color:var(--pink)">&#9825;</span>
+  <div class="marquee__viewport">
+    <div class="marquee__track">
+      <span class="marquee__seg">{item}  ::  </span>
+      <span class="marquee__seg" aria-hidden="true">{item}  ::  </span>
+    </div>
+  </div>
+  <span class="rk-wobble" style="color:var(--pink); animation-delay:.4s">&#9825;</span>
+</div>
+
+<style>
+  .marquee {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+  }
+  .marquee__viewport {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee__track {
+    display: inline-flex;
+    animation: scroll-left 28s linear infinite;
+  }
+  .marquee__seg {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--ink);
+    padding-right: 8px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+    .marquee__viewport { white-space: normal; }
+  }
+</style>

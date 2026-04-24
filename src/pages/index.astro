@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Marquee from '../components/Marquee.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { getCollection } from 'astro:content';
+
+// Pull the latest journal entry so the homepage always features it.
+const entries = await getCollection('journal');
+const latest = entries.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+)[0];
+
+const latestDate = latest
+  ? latest.data.date.toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric',
+    }).toLowerCase()
+  : '';
+---
+
+<BaseLayout title="UToledo Swim Club" current="home">
+
+  <Marquee latestTitle={latest?.data.title} />
+
+  <div class="home-grid">
+
+    {latest && (
+      <article class="journal-card block">
+        <div class="new-badge rk-blink">NEW!</div>
+
+        <div class="sparkle-title">
+          <svg class="rk-spin" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+            <path d="M6 0 L7.3 4.5 L12 6 L7.3 7.5 L6 12 L4.7 7.5 L0 6 L4.7 4.5 Z"
+                  fill="#ff3b6b" stroke="#15397F" stroke-width="1"/>
+          </svg>
+          &gt;&gt; LATEST RECAP &gt;&gt;
+          <svg class="rk-spin" viewBox="0 0 12 12" width="12" height="12" style="animation-direction: reverse;" aria-hidden="true">
+            <path d="M6 0 L7.3 4.5 L12 6 L7.3 7.5 L6 12 L4.7 7.5 L0 6 L4.7 4.5 Z"
+                  fill="#ff3b6b" stroke="#15397F" stroke-width="1"/>
+          </svg>
+        </div>
+
+        <h2 class="journal-card__title">{latest.data.title}</h2>
+        {latest.data.excerpt && (
+          <p class="journal-card__excerpt">{latest.data.excerpt}</p>
+        )}
+
+        <a href={`/journal/${latest.id.replace(/\.md$/, '')}`} class="btn btn--gold">
+          [ read the full entry &rarr; ]
+        </a>
+
+        <div class="journal-card__meta">
+          posted {latestDate} &middot; {latest.data.author}
+        </div>
+      </article>
+    )}
+
+    <Sidebar />
+
+  </div>
+
+  <section class="intro block">
+    <h2 class="display intro__title">come swim with us</h2>
+    <p>
+      the university of toledo swim club is a registered student org open to all students &mdash;
+      no tryouts, no cut times, no pressure. we practice three nights a week, travel to a few
+      meets, and have more team dinners than we probably should.
+    </p>
+    <p>
+      <strong>practices:</strong> monday, tuesday, thursday &middot; 7&ndash;8pm &middot; student rec center pool
+    </p>
+    <p>
+      <strong>contact:</strong> <a href="mailto:swimming@utoledo.edu">swimming@utoledo.edu</a> or dm us on instagram at <a href="https://instagram.com/swimclub_utoledo" target="_blank" rel="noopener">@swimclub_utoledo</a>
+    </p>
+    <p>
+      <a href="/join" class="btn btn--pink">[ join the club &rarr; ]</a>
+    </p>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .home-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 640px) {
+    .home-grid { grid-template-columns: 1fr; }
+  }
+
+  .journal-card {
+    position: relative;
+  }
+  .new-badge {
+    position: absolute;
+    top: -10px;
+    right: -6px;
+    background: var(--pink);
+    color: #fff;
+    padding: 3px 8px;
+    border: 2px solid var(--gold);
+    font-size: 11px;
+    font-weight: 500;
+    transform: rotate(8deg);
+  }
+  .journal-card__title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 0 0 10px;
+    color: var(--navy-deep);
+    letter-spacing: 1px;
+  }
+  .journal-card__excerpt {
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .journal-card__meta {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--navy-deep);
+  }
+
+  .intro__title {
+    color: var(--navy-deep);
+    margin: 0 0 8px;
+    font-size: 22px;
+  }
+  .intro p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 10px;
+    color: var(--ink);
+  }
+</style>

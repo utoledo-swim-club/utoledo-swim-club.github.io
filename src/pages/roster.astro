@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Edit this list as membership changes.
+// Add a photo by dropping a file in public/roster/ and setting photo: '/roster/filename.jpg'
+const roster = [
+  { name: 'Joshua Pereira', role: 'social media & website', year: '' },
+  { name: 'John Best',      role: '', year: '' },
+  { name: 'Aaron Samuel',   role: '', year: '' },
+  { name: 'Bryant Geer',    role: '', year: '' },
+  { name: 'Nonso Nwogu',    role: '', year: '' },
+];
+
+const advisor = { name: 'Professor Weiqing Sun', role: 'faculty advisor' };
+---
+
+<BaseLayout title="roster — UToledo Swim Club" current="roster">
+
+  <div class="block">
+    <h1 class="display page-title">&gt;&gt; the roster &lt;&lt;</h1>
+    <p class="page-lede">
+      the swimmers who make this club a real thing. if you want to be on this list next year,
+      <a href="/join">come join</a>.
+    </p>
+  </div>
+
+  <ul class="roster">
+    {roster.map(p => (
+      <li class="roster__item block">
+        <div class="roster__name">{p.name}</div>
+        {p.role && <div class="roster__role">{p.role}</div>}
+        {p.year && <div class="roster__year">class of {p.year}</div>}
+      </li>
+    ))}
+  </ul>
+
+  <div class="block">
+    <h2 class="roster__section">faculty advisor</h2>
+    <div class="roster__advisor">
+      <div class="roster__name">{advisor.name}</div>
+      <div class="roster__role">{advisor.role}</div>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 28px;
+    color: var(--navy-deep);
+    margin: 0 0 6px;
+    letter-spacing: 2px;
+  }
+  .page-lede { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
+
+  .roster {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  .roster__item {
+    margin: 0;
+    text-align: center;
+  }
+  .roster__name {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--navy-deep);
+  }
+  .roster__role {
+    font-size: 11px;
+    color: var(--navy-deep);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .roster__year {
+    font-size: 11px;
+    color: var(--navy-deep);
+    margin-top: 2px;
+  }
+  .roster__section {
+    font-family: Impact, 'Arial Black', sans-serif;
+    color: var(--navy-deep);
+    margin: 0 0 6px;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .roster__advisor { text-align: center; }
+</style>

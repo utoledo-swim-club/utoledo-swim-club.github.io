@@ -1,0 +1,79 @@
+---
+import Rocket from './icons/Rocket.astro';
+---
+
+<header class="site-header">
+  <div class="rocket-streak" aria-hidden="true">
+    <svg viewBox="0 0 40 20" width="40" height="20">
+      <path d="M2 10 L18 6 L22 8 L22 12 L18 14 Z" fill="#FFD100" stroke="#0b2a5c" stroke-width="1"/>
+      <path class="rk-flame" d="M2 10 L-6 7 L-4 10 L-6 13 Z" fill="#fff"/>
+    </svg>
+  </div>
+
+  <div class="site-header__inner frame">
+    <div class="site-header__row">
+      <Rocket size={30} variant="gold" animated class="rk-bob" />
+      <a href="/" class="site-header__brandlink">
+        <div class="site-header__title display">~*~ UTOLEDO SWIM CLUB ~*~</div>
+        <div class="site-header__subtitle">the happiest swimmers on the bancroft campus <span style="color:var(--pink)">&#9825;</span></div>
+      </a>
+      <Rocket size={30} variant="gold" animated class="rk-bob" />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .rocket-streak {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 40px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .rocket-streak svg {
+    animation: streak 9s linear infinite;
+  }
+  .site-header__inner {
+    position: relative;
+    z-index: 2;
+    background: var(--navy-deep);
+    text-align: center;
+  }
+  .site-header__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .site-header__brandlink {
+    text-decoration: none;
+    color: var(--gold);
+  }
+  .site-header__brandlink:hover { color: var(--gold); }
+  .site-header__title {
+    font-size: 22px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 var(--navy);
+  }
+  .site-header__subtitle {
+    font-size: 11px;
+    color: var(--white);
+    margin-top: 3px;
+  }
+  .site-header__rocket-delay {
+    animation-delay: 1s;
+  }
+  @media (max-width: 560px) {
+    .site-header__title { font-size: 16px; letter-spacing: 1px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rocket-streak svg { animation: none; }
+  }
+</style>

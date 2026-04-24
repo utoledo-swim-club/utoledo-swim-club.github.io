@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Add new entries to the TOP of this list when people email them in.
+// Each entry needs: name, date, message. Everything else is optional.
+//
+// OPTIONAL: upgrade this to a real form by using a service like Formspree,
+// Netlify Forms, or a Google Form embed. For now, manual is on-brand.
+const entries = [
+  {
+    name: 'joshua',
+    date: '2026-04-24',
+    message: 'first! welcome to the guestbook. sign below so future-you and future-team can see who stopped by.',
+    isFirstPost: true,
+  },
+];
+---
+
+<BaseLayout title="guestbook — UToledo Swim Club" current="guestbook">
+
+  <div class="block">
+    <h1 class="display page-title">&gt;&gt; the guestbook &lt;&lt;</h1>
+    <p class="page-lede">
+      classic internet tradition. sign in, leave a note, say hi. alumni especially welcome.
+    </p>
+  </div>
+
+  <div class="block block--navy text-center sign-cta">
+    <h2 class="sign-cta__title">sign the guestbook</h2>
+    <p class="sign-cta__body">
+      email your entry to <a href="mailto:swimming@utoledo.edu?subject=guestbook%20entry" class="sign-cta__link">swimming@utoledo.edu</a> with subject "guestbook entry".
+      include your name, where you're from, and a short message.
+    </p>
+    <p><a href="mailto:swimming@utoledo.edu?subject=guestbook%20entry" class="btn btn--gold">[ sign the book &rarr; ]</a></p>
+  </div>
+
+  <ul class="entries">
+    {entries.map(e => (
+      <li class={`entry block ${e.isFirstPost ? 'entry--first' : ''}`}>
+        <div class="entry__header">
+          <span class="entry__name">{e.name}</span>
+          <span class="entry__date">{e.date}</span>
+        </div>
+        <p class="entry__message">{e.message}</p>
+      </li>
+    ))}
+  </ul>
+
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 28px;
+    color: var(--navy-deep);
+    margin: 0 0 6px;
+    letter-spacing: 2px;
+  }
+  .page-lede { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
+
+  .sign-cta { margin: 10px 0; }
+  .sign-cta__title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin: 0 0 6px;
+    font-size: 20px;
+  }
+  .sign-cta__body {
+    font-size: 13px;
+    margin: 0 0 10px;
+    line-height: 1.6;
+  }
+  .sign-cta__link {
+    color: var(--gold);
+    text-decoration: underline;
+  }
+
+  .entries {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+  }
+  .entry__header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--navy-deep);
+    margin-bottom: 6px;
+  }
+  .entry__name {
+    font-weight: 500;
+    background: var(--gold);
+    padding: 1px 6px;
+  }
+  .entry__message {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--ink);
+  }
+  .entry--first {
+    background: var(--cream-deep);
+  }
+</style>
