@@ -1,138 +1,202 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Marquee from '../components/Marquee.astro';
-import Sidebar from '../components/Sidebar.astro';
+import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
+import { club, practices, practiceSummary } from '../data/club';
+import { nextMeet } from '../data/meets';
 
-// Pull the latest journal entry so the homepage always features it.
-const entries = await getCollection('journal');
-const latest = entries.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-)[0];
-
-const latestDate = latest
-  ? latest.data.date.toLocaleDateString('en-US', {
-      month: 'short', day: 'numeric', year: 'numeric',
-    }).toLowerCase()
-  : '';
+const posts = (await getCollection('journal'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
-<BaseLayout title="UToledo Swim Club" current="home">
+<BaseLayout current="home">
 
-  <Marquee latestTitle={latest?.data.title} />
-
-  <div class="home-grid">
-
-    {latest && (
-      <article class="journal-card block">
-        <div class="new-badge rk-blink">NEW!</div>
-
-        <div class="sparkle-title">
-          <svg class="rk-spin" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
-            <path d="M6 0 L7.3 4.5 L12 6 L7.3 7.5 L6 12 L4.7 7.5 L0 6 L4.7 4.5 Z"
-                  fill="#ff3b6b" stroke="#15397F" stroke-width="1"/>
-          </svg>
-          &gt;&gt; LATEST RECAP &gt;&gt;
-          <svg class="rk-spin" viewBox="0 0 12 12" width="12" height="12" style="animation-direction: reverse;" aria-hidden="true">
-            <path d="M6 0 L7.3 4.5 L12 6 L7.3 7.5 L6 12 L4.7 7.5 L0 6 L4.7 4.5 Z"
-                  fill="#ff3b6b" stroke="#15397F" stroke-width="1"/>
-          </svg>
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="eyebrow">University of Toledo Club Sports</p>
+        <h1 class="display hero__title">Train hard.<br />Swim fast.<br />Have fun.</h1>
+        <p class="hero__lede">
+          {club.tagline} Former high school swimmers, club swimmers and people just getting
+          back in the water are all welcome. No tryouts.
+        </p>
+        <div class="btn-row">
+          <a href="/join" class="btn btn--gold">Join the club</a>
+          <a href="#schedule" class="btn btn--ghost">See practice times</a>
         </div>
+      </div>
+      <div class="hero__art">
+        <img src="/logo-mark.png" alt="UToledo Swim Club logo" width="512" height="512" />
+      </div>
+    </div>
+  </section>
 
-        <h2 class="journal-card__title">{latest.data.title}</h2>
-        {latest.data.excerpt && (
-          <p class="journal-card__excerpt">{latest.data.excerpt}</p>
-        )}
-
-        <a href={`/journal/${latest.id.replace(/\.md$/, '')}`} class="btn btn--gold">
-          [ read the full entry &rarr; ]
-        </a>
-
-        <div class="journal-card__meta">
-          posted {latestDate} &middot; {latest.data.author}
+  <section class="glance" aria-label="At a glance">
+    <div class="container glance__grid">
+      <div class="glance__item">
+        <div class="glance__label">Practice</div>
+        <div class="glance__value">{practiceSummary}</div>
+      </div>
+      <div class="glance__item">
+        <div class="glance__label">Next meet</div>
+        <div class="glance__value">
+          {nextMeet ? `${nextMeet.name}, ${nextMeet.date}` : 'Coming soon'}
         </div>
-      </article>
-    )}
+      </div>
+      <div class="glance__item">
+        <div class="glance__label">Where we swim</div>
+        <div class="glance__value">Student Rec Center Pool</div>
+      </div>
+    </div>
+  </section>
 
-    <Sidebar />
+  <section id="schedule" class="section">
+    <div class="container split">
+      <div class="split__intro">
+        <p class="eyebrow">Practice</p>
+        <h2 class="display h2">Weekly schedule</h2>
+        <p class="lede">
+          Come to as many or as few as you want. Bring a suit, cap and goggles. Times can
+          change around breaks and meets, so check our
+          <a href={club.instagramUrl} target="_blank" rel="noopener">Instagram</a> for updates.
+        </p>
+      </div>
+      <div class="split__body table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">Day</th><th scope="col">Time</th><th scope="col">Where</th></tr>
+          </thead>
+          <tbody>
+            {practices.map((p) => (
+              <tr><td>{p.day}</td><td>{p.time}</td><td>{club.location}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-  </div>
+  {posts.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Club journal</p>
+            <h2 class="display h2">Latest from the pool</h2>
+          </div>
+          <a href="/journal" class="section-head__link">All posts</a>
+        </div>
+        <div class="grid-cards">
+          {posts.map((post) => <PostCard post={post} />)}
+        </div>
+      </div>
+    </section>
+  )}
 
-  <section class="intro block">
-    <h2 class="display intro__title">come swim with us</h2>
-    <p>
-      the university of toledo swim club is a registered student org open to all students &mdash;
-      no tryouts, no cut times, no pressure. we practice three nights a week, travel to a few
-      meets, and have more team dinners than we probably should.
-    </p>
-    <p>
-      <strong>practices:</strong> monday, tuesday, thursday &middot; 7&ndash;8pm &middot; student rec center pool
-    </p>
-    <p>
-      <strong>contact:</strong> <a href="mailto:swimming@utoledo.edu">swimming@utoledo.edu</a> or dm us on instagram at <a href="https://instagram.com/swimclub_utoledo" target="_blank" rel="noopener">@swimclub_utoledo</a>
-    </p>
-    <p>
-      <a href="/join" class="btn btn--pink">[ join the club &rarr; ]</a>
-    </p>
+  <section class="section section--navy">
+    <div class="container cta">
+      <div>
+        <h2 class="display cta__title">Ready to get in the water?</h2>
+        <p class="lede">
+          No tryouts. Show up to any practice, meet the team, and see if it fits.
+          Your first practice is free.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a href="/join" class="btn btn--gold">How to join</a>
+        <a href={`mailto:${club.email}`} class="btn btn--ghost">Email us</a>
+      </div>
+    </div>
   </section>
 
 </BaseLayout>
 
 <style>
-  .home-grid {
+  .hero { background: var(--navy); color: #fff; }
+  .hero__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 48px;
+    padding-top: 72px;
+    padding-bottom: 96px;
+  }
+  .hero__text {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .hero .eyebrow { color: var(--gold); margin: 0; }
+  .hero__title { font-size: clamp(56px, 9vw, 88px); line-height: 0.95; }
+  .hero__lede {
+    margin: 0;
+    font-size: 19px;
+    color: var(--on-navy);
+    max-width: 520px;
+  }
+  .hero__art {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .hero__art img { width: min(100%, 440px); }
+
+  .glance { background: var(--gold); color: var(--navy); }
+  .glance__grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
-  @media (max-width: 640px) {
-    .home-grid { grid-template-columns: 1fr; }
+  .glance__item { padding: 28px 24px 28px 0; }
+  .glance__item + .glance__item {
+    padding-left: 24px;
+    border-left: 1px solid rgba(11, 31, 58, 0.2);
   }
-
-  .journal-card {
-    position: relative;
-  }
-  .new-badge {
-    position: absolute;
-    top: -10px;
-    right: -6px;
-    background: var(--pink);
-    color: #fff;
-    padding: 3px 8px;
-    border: 2px solid var(--gold);
-    font-size: 11px;
-    font-weight: 500;
-    transform: rotate(8deg);
-  }
-  .journal-card__title {
-    font-family: Impact, 'Arial Black', sans-serif;
-    font-size: 22px;
-    line-height: 1.2;
-    margin: 0 0 10px;
-    color: var(--navy-deep);
-    letter-spacing: 1px;
-  }
-  .journal-card__excerpt {
+  .glance__label {
     font-size: 13px;
-    line-height: 1.55;
-    margin: 0 0 12px;
-    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
   }
-  .journal-card__meta {
-    margin-top: 10px;
-    font-size: 11px;
-    color: var(--navy-deep);
+  .glance__value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1.15;
+    margin-top: 4px;
+  }
+  @media (max-width: 760px) {
+    .glance__item, .glance__item + .glance__item {
+      padding: 20px 0;
+      border-left: 0;
+    }
+    .glance__item + .glance__item { border-top: 1px solid rgba(11, 31, 58, 0.2); }
   }
 
-  .intro__title {
-    color: var(--navy-deep);
-    margin: 0 0 8px;
-    font-size: 22px;
+  .split { display: flex; flex-wrap: wrap; gap: 56px; }
+  .split__intro { flex: 1 1 320px; min-width: 0; }
+  .split__body { flex: 2 1 560px; min-width: 0; }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 40px;
   }
-  .intro p {
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0 0 10px;
-    color: var(--ink);
+  .section-head__link { font-weight: 600; padding: 10px 0; }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
   }
+  .cta > div:first-child { flex: 1 1 520px; min-width: 0; }
+  .cta__title { font-size: clamp(44px, 7vw, 64px); }
 </style>

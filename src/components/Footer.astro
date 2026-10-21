@@ -1,42 +1,61 @@
 ---
-import Rocket from './icons/Rocket.astro';
+import { club } from '../data/club';
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="webring">
-    <Rocket size={14} variant="navy" class="rk-bob" />
-    <span class="webring__label">member of the college swim clubs webring</span>
-    <Rocket size={14} variant="navy" class="rk-bob" style="animation-delay: .5s" />
-    <span class="webring__nav">&lt; prev &middot; random &middot; next &gt;</span>
+  <div class="container site-footer__inner">
+    <div class="site-footer__about">
+      <div class="site-footer__name">{club.name}</div>
+      <p>A registered student organization at the University of Toledo.</p>
+    </div>
+    <nav aria-label="Footer" class="site-footer__links">
+      <a href={club.instagramUrl} target="_blank" rel="noopener">Instagram</a>
+      <a href={`mailto:${club.email}`}>{club.email}</a>
+      <a href={club.invonetUrl} target="_blank" rel="noopener">InvoNet</a>
+      <a href="/guestbook">Guestbook</a>
+    </nav>
   </div>
-  <div class="credit">
-    a site by joshua, for the swim club fam <span style="color:var(--pink)">&#9825;</span> est. 2026 &middot; made in toledo, oh
-  </div>
+  <div class="container site-footer__base">© {year} {club.name}</div>
 </footer>
 
 <style>
   .site-footer {
-    margin-top: 14px;
+    background: var(--navy-deep);
+    color: var(--on-navy-muted);
+    font-size: 15px;
+    padding: 48px 0 32px;
   }
-  .webring {
-    background: var(--gold);
-    border: 2px solid var(--white);
-    padding: 8px 10px;
+  .site-footer__inner {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 11px;
-    color: var(--navy-deep);
     flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
   }
-  .webring__label { font-weight: 500; }
-  .credit {
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 2px dashed var(--gold);
-    text-align: center;
-    font-size: 11px;
-    color: var(--cream);
+  .site-footer__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .site-footer__about p { margin: 4px 0 0; }
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 28px;
+  }
+  .site-footer__links a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 0;
+  }
+  .site-footer__links a:hover { color: var(--gold); }
+  .site-footer__base {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #1E3354;
+    font-size: 14px;
   }
 </style>

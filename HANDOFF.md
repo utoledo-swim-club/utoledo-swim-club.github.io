@@ -47,9 +47,13 @@ the file, add/remove/edit people, commit.
 
 ### Adding a meet
 
-Edit `src/pages/meets.astro`. Add a new entry to the `meets` array. Set
+Edit `src/data/meets.ts`. Add a new entry to the `meets` list. Set
 `status` to `'upcoming'` before it happens, `'past'` after. Keep them in
 reverse chronological order.
+
+### Practice times, email, Instagram, dues
+
+Edit `src/data/club.ts`. Every page reads from it, so one change updates the whole site.
 
 ### Guestbook
 

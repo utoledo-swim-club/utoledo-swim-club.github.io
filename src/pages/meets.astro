@@ -1,132 +1,75 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { upcomingMeets, pastMeets, type Meet } from '../data/meets';
 
-// Add meets here as they happen. Keep the list in reverse chronological order.
-interface Meet {
-  name: string;
-  date: string;
-  location: string;
-  status: 'upcoming' | 'past';
-  notes?: string;
-}
-
-const meets: Meet[] = [
-  {
-    name: 'Spring Invitational',
-    date: 'may 2026',
-    location: 'TBD',
-    status: 'upcoming',
-    notes: 'details coming soon',
-  },
+// Meets are listed in src/data/meets.ts
+const groups: { title: string; meets: Meet[] }[] = [
+  { title: 'Upcoming', meets: upcomingMeets },
+  { title: 'Results', meets: pastMeets },
 ];
-
-const upcoming = meets.filter(m => m.status === 'upcoming');
-const past = meets.filter(m => m.status === 'past');
 ---
 
-<BaseLayout title="meets — UToledo Swim Club" current="meets">
+<BaseLayout title="Meets" current="meets">
 
-  <div class="block">
-    <h1 class="display page-title">&gt;&gt; meets &lt;&lt;</h1>
-    <p class="page-lede">
-      upcoming and recent meets. results get posted here a day or two after.
-    </p>
-  </div>
-
-  {upcoming.length > 0 && (
-    <section>
-      <h2 class="section-title">upcoming</h2>
-      <ul class="meet-list">
-        {upcoming.map(m => (
-          <li class="meet block">
-            <div class="meet__tag meet__tag--upcoming">upcoming</div>
-            <h3 class="meet__name">{m.name}</h3>
-            <div class="meet__meta">{m.date} &middot; {m.location}</div>
-            {m.notes && <p class="meet__notes">{m.notes}</p>}
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
-
-  {past.length > 0 && (
-    <section>
-      <h2 class="section-title">past</h2>
-      <ul class="meet-list">
-        {past.map(m => (
-          <li class="meet block">
-            <div class="meet__tag meet__tag--past">past</div>
-            <h3 class="meet__name">{m.name}</h3>
-            <div class="meet__meta">{m.date} &middot; {m.location}</div>
-            {m.notes && <p class="meet__notes">{m.notes}</p>}
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
-
-  {past.length === 0 && (
-    <div class="block text-center">
-      <p style="margin:0; font-size:13px; color:var(--ink);">no meets logged yet. check back after the first one!</p>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Competition</p>
+      <h1 class="display">Meets</h1>
+      <p class="lede">Upcoming and recent meets. Results go up a day or two after each one. Meets are always optional.</p>
     </div>
-  )}
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {groups.map((g) => (
+        <div class="meet-group">
+          <h2 class="display meet-group__title">{g.title}</h2>
+          {g.meets.length > 0 ? (
+            <ul class="meet-list">
+              {g.meets.map((m) => (
+                <li class="meet">
+                  <div class="meet__date">{m.date}</div>
+                  <div class="meet__info">
+                    <div class="meet__name">{m.name}</div>
+                    <div class="meet__loc">{m.location}</div>
+                    {m.notes && <p class="meet__notes">{m.notes}</p>}
+                  </div>
+                  {m.status === 'upcoming' && <span class="tag tag--gold">Upcoming</span>}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="meet-empty">{g.title === 'Upcoming' ? 'No meets scheduled yet. Check back soon.' : 'No results posted yet.'}</p>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  .page-title {
-    font-size: 28px;
-    color: var(--navy-deep);
-    margin: 0 0 6px;
-    letter-spacing: 2px;
+  .meet-group + .meet-group { margin-top: 64px; }
+  .meet-group__title { font-size: 36px; margin-bottom: 8px; }
+  .meet-list { list-style: none; padding: 0; margin: 0; }
+  .meet {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px 32px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
   }
-  .page-lede { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
-
-  .section-title {
-    font-family: Impact, 'Arial Black', sans-serif;
-    color: var(--gold);
-    letter-spacing: 2px;
-    margin: 16px 0 6px;
-    font-size: 16px;
+  .meet__date {
+    flex: 0 0 160px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    text-transform: uppercase;
   }
-
-  .meet-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .meet { position: relative; }
-  .meet__tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 500;
-    padding: 2px 6px;
-    margin-bottom: 6px;
-  }
-  .meet__tag--upcoming {
-    background: var(--pink);
-    color: var(--white);
-  }
-  .meet__tag--past {
-    background: var(--navy-deep);
-    color: var(--gold);
-  }
-  .meet__name {
-    font-family: Impact, 'Arial Black', sans-serif;
-    font-size: 20px;
-    margin: 0 0 4px;
-    letter-spacing: 1px;
-    color: var(--navy-deep);
-  }
-  .meet__meta {
-    font-size: 12px;
-    color: var(--navy-deep);
-    margin-bottom: 6px;
-  }
-  .meet__notes {
-    font-size: 13px;
-    line-height: 1.55;
-    margin: 0;
-    color: var(--ink);
-  }
+  .meet__info { flex: 1 1 300px; min-width: 0; }
+  .meet__name { font-family: var(--font-display); font-weight: 700; font-size: 28px; line-height: 1.15; }
+  .meet__loc { color: var(--muted); font-size: 15px; }
+  .meet__notes { margin: 8px 0 0; }
+  .meet-empty { color: var(--muted); }
 </style>

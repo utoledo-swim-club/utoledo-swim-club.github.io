@@ -48,8 +48,9 @@ Push to `main` and the site rebuilds and deploys within a minute or two.
 ## Editing other pages
 
 - **Roster** — `src/pages/roster.astro`, edit the `roster` array at the top
-- **Meets** — `src/pages/meets.astro`, edit the `meets` array at the top
-- **Join page info** — `src/pages/join.astro`
+- **Meets** — `src/data/meets.ts`, edit the `meets` list
+- **Practice times, email, Instagram, dues** — `src/data/club.ts` (updates every page at once)
+- **Join page steps and FAQ** — `src/pages/join.astro`
 - **Guestbook entries** — `src/pages/guestbook.astro`, add to the top of the `entries` array
 
 ## Structure
@@ -57,11 +58,12 @@ Push to `main` and the site rebuilds and deploys within a minute or two.
 ```
 src/
   content/journal/       journal entries (markdown)
-  components/            header, nav, sidebar, footer, marquee, icons
+  components/            header, footer, post card
+  data/                  club info and meets list
   layouts/BaseLayout     shared page shell
   pages/                 one file = one page
-  styles/global.css      palette, typography, animations
-public/                  logo, favicon, images (served as-is)
+  styles/global.css      colors, fonts, shared styles
+public/                  logo, images (served as-is)
 .github/workflows/       auto-deploy to GitHub Pages
 ```
 

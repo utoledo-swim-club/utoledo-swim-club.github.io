@@ -4,7 +4,7 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const entries = await getCollection('journal');
-  return entries.map(entry => ({
+  return entries.map((entry) => ({
     params: { slug: entry.id.replace(/\.md$/, '') },
     props: { entry },
   }));
@@ -13,56 +13,43 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-US', {
-    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-  }).toLowerCase();
+const date = entry.data.date.toLocaleDateString('en-US', {
+  weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC',
+});
 ---
 
-<BaseLayout title={`${entry.data.title} — UToledo Swim Club`} current="journal">
+<BaseLayout title={entry.data.title} description={entry.data.excerpt} current="journal">
 
-  <article class="block prose">
-    <div class="entry-meta">
-      {entry.data.week && <span class="entry-meta__week">week {entry.data.week}</span>}
-      <span class="entry-meta__date">{fmt(entry.data.date)}</span>
-      <span class="entry-meta__author">by {entry.data.author}</span>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">
+        {entry.data.week ? `Week ${entry.data.week} · ` : ''}{date}
+      </p>
+      <h1 class="display post-title">{entry.data.title}</h1>
+      <p class="lede">By {entry.data.author}</p>
     </div>
+  </section>
 
-    <h1 class="entry-title">{entry.data.title}</h1>
+  {entry.data.cover && (
+    <div class="container post-cover">
+      <img src={entry.data.cover} alt="" />
+    </div>
+  )}
 
-    <Content />
-
-    <hr />
-    <p class="entry-back"><a href="/journal">&larr; back to the journal</a></p>
-  </article>
+  <section class="section">
+    <div class="container">
+      <article class="prose">
+        <Content />
+        <hr />
+        <p><a href="/journal">Back to the journal</a></p>
+      </article>
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  .entry-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    font-size: 11px;
-    color: var(--navy-deep);
-    margin-bottom: 8px;
-  }
-  .entry-meta__week {
-    background: var(--gold);
-    color: var(--navy-deep);
-    padding: 1px 6px;
-    font-weight: 500;
-  }
-  .entry-title {
-    font-family: Impact, 'Arial Black', sans-serif;
-    font-size: 28px;
-    margin: 0 0 16px;
-    color: var(--navy-deep);
-    letter-spacing: 1px;
-    line-height: 1.2;
-  }
-  .entry-back {
-    font-size: 12px;
-    margin-top: 20px;
-  }
+  .post-title { font-size: clamp(40px, 6vw, 64px) !important; max-width: 900px; }
+  .post-cover { margin-top: -32px; }
+  .post-cover img { border-radius: var(--radius); width: 100%; max-height: 520px; object-fit: cover; }
 </style>

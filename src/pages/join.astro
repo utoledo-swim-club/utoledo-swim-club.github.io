@@ -1,98 +1,126 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { club, practiceSummary } from '../data/club';
+
+const steps = [
+  { title: 'Show up to practice', body: `${practiceSummary}, at the ${club.location}.` },
+  { title: 'Bring your gear', body: 'Suit, goggles, cap and a towel. We have extra caps if you forget.' },
+  { title: 'First practice is free', body: 'No commitment. Just come try it and meet the team.' },
+  { title: 'Register and pay dues', body: `Sign up on InvoNet and pay club dues (${club.dues}). Dues cover pool time and travel.` },
+];
+
+const faqs = [
+  { q: "I haven't swum since high school, or ever. Is that okay?", a: 'Yes. We have swimmers at every level. Come as you are.' },
+  { q: 'Do I have to compete?', a: 'No. Meets are optional. Some people only come for practice and team dinners, and that is fine.' },
+  { q: 'Can I join mid-semester?', a: 'Yes. Come whenever you want.' },
+  { q: 'What happens at a first practice?', a: 'Warm up, some drills, a main set and a cool down, about 2,000 to 3,000 yards total. You can sit out sets if you need to.' },
+];
 ---
 
-<BaseLayout title="join — UToledo Swim Club" current="join">
+<BaseLayout title="Join" current="join">
 
-  <div class="block">
-    <h1 class="display page-title">&gt;&gt; come join us &lt;&lt;</h1>
-    <p class="page-lede">
-      no tryouts. no cut times. no minimum speed. if you can get yourself down a lane, you can join.
-    </p>
-  </div>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Join the club</p>
+      <h1 class="display">No tryouts.<br />No cut times.</h1>
+      <p class="lede">If you can get yourself down a lane, you can join.</p>
+    </div>
+  </section>
 
-  <div class="block">
-    <h2 class="section-title">how it works</h2>
-    <ol class="join-steps">
-      <li><strong>show up to practice.</strong> mon / tues / thurs &middot; 7&ndash;8pm &middot; student rec center pool.</li>
-      <li><strong>bring:</strong> suit, goggles, cap (we have extras if you forget), towel.</li>
-      <li><strong>first practice is free.</strong> no commitment, just come try it.</li>
-      <li><strong>after that,</strong> register through InvoNet and pay the club dues ($ tbd per semester, covers pool time and travel).</li>
-    </ol>
-  </div>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">How it works</p>
+      <h2 class="display h2">Four steps</h2>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step card">
+            <div class="step__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
+            <div class="step__title">{s.title}</div>
+            <p class="step__body">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
-  <div class="block">
-    <h2 class="section-title">frequently asked</h2>
+  <section class="section section--alt">
+    <div class="container faq-wrap">
+      <div>
+        <p class="eyebrow">Questions</p>
+        <h2 class="display h2">FAQ</h2>
+      </div>
+      <div class="faqs">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
 
-    <h3 class="faq__q">i haven't swum since high school / ever. is that okay?</h3>
-    <p class="faq__a">totally. we have swimmers at every level. come as you are.</p>
-
-    <h3 class="faq__q">do i have to compete?</h3>
-    <p class="faq__a">nope. meets are optional. some people only come for practice and team dinners, which is also a valid strategy.</p>
-
-    <h3 class="faq__q">can i still join mid-semester?</h3>
-    <p class="faq__a">yes. come whenever.</p>
-
-    <h3 class="faq__q">what should i expect at a first practice?</h3>
-    <p class="faq__a">low-key. warm up, some drills, a main set, warm down. maybe 2,000&ndash;3,000 yards total. you can skip sets if you need to.</p>
-  </div>
-
-  <div class="block block--navy text-center contact">
-    <h2 class="contact__title">reach out</h2>
-    <p style="margin:4px 0;"><a href="mailto:swimming@utoledo.edu" class="btn btn--gold">[ email us ]</a></p>
-    <p style="margin:4px 0;"><a href="https://instagram.com/swimclub_utoledo" target="_blank" rel="noopener" class="btn btn--pink">[ dm on instagram ]</a></p>
-    <p style="margin:4px 0;"><a href="https://invonet.utoledo.edu/organization/swim-club" target="_blank" rel="noopener" class="btn">[ find us on invonet ]</a></p>
-  </div>
+  <section class="section section--navy">
+    <div class="container contact">
+      <div>
+        <h2 class="display contact__title">Get in touch</h2>
+        <p class="lede">Questions before your first practice? Reach out any way you like.</p>
+      </div>
+      <div class="btn-row">
+        <a href={`mailto:${club.email}`} class="btn btn--gold">Email us</a>
+        <a href={club.instagramUrl} target="_blank" rel="noopener" class="btn btn--ghost">DM on Instagram</a>
+        <a href={club.invonetUrl} target="_blank" rel="noopener" class="btn btn--ghost">Find us on InvoNet</a>
+      </div>
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  .page-title {
-    font-size: 28px;
-    color: var(--navy-deep);
-    margin: 0 0 6px;
-    letter-spacing: 2px;
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
   }
-  .page-lede { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
+  .step__num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 40px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .step__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.15;
+    margin-top: 12px;
+  }
+  .step__body { margin: 8px 0 0; color: var(--muted); font-size: 16px; }
 
-  .section-title {
-    font-family: Impact, 'Arial Black', sans-serif;
-    color: var(--navy-deep);
-    margin: 0 0 10px;
+  .faq-wrap { display: flex; flex-wrap: wrap; gap: 48px; }
+  .faq-wrap > div:first-child { flex: 1 1 260px; }
+  .faqs { flex: 2 1 560px; min-width: 0; }
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 600;
     font-size: 18px;
-    letter-spacing: 1px;
+    padding: 20px 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
   }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; font-size: 24px; line-height: 1; color: var(--muted); }
+  .faq[open] summary::after { content: '−'; }
+  .faq p { margin: 0 0 20px; color: var(--muted); }
 
-  .join-steps {
-    margin: 0;
-    padding-left: 22px;
-  }
-  .join-steps li {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-
-  .faq__q {
-    font-family: 'Courier New', monospace;
-    font-weight: 500;
-    font-size: 14px;
-    color: var(--navy-deep);
-    margin: 12px 0 4px;
-  }
-  .faq__a {
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 0;
-    color: var(--ink);
-  }
-
-  .contact__title {
-    font-family: Impact, 'Arial Black', sans-serif;
-    color: var(--gold);
-    letter-spacing: 2px;
-    margin: 0 0 10px;
-    font-size: 20px;
-  }
+  .contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 40px; }
+  .contact > div:first-child { flex: 1 1 420px; }
+  .contact__title { font-size: clamp(44px, 7vw, 64px); }
 </style>

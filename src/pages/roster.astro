@@ -2,92 +2,92 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 // Edit this list as membership changes.
-// Add a photo by dropping a file in public/roster/ and setting photo: '/roster/filename.jpg'
-const roster = [
-  { name: 'Joshua Pereira', role: 'social media & website', year: '' },
-  { name: 'John Best',      role: '', year: '' },
-  { name: 'Aaron Samuel',   role: '', year: '' },
-  { name: 'Bryant Geer',    role: '', year: '' },
-  { name: 'Nonso Nwogu',    role: '', year: '' },
+// To add a photo: put the file in public/roster/ and set photo: '/roster/filename.jpg'
+const roster: { name: string; role?: string; year?: string; photo?: string }[] = [
+  { name: 'Joshua Pereira', role: 'Social Media and Website' },
+  { name: 'John Best' },
+  { name: 'Aaron Samuel' },
+  { name: 'Bryant Geer' },
+  { name: 'Nonso Nwogu' },
 ];
 
-const advisor = { name: 'Professor Weiqing Sun', role: 'faculty advisor' };
+const advisor = { name: 'Professor Weiqing Sun', role: 'Faculty Advisor' };
+
+const initials = (name: string) =>
+  name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
 ---
 
-<BaseLayout title="roster — UToledo Swim Club" current="roster">
+<BaseLayout title="Roster" current="roster">
 
-  <div class="block">
-    <h1 class="display page-title">&gt;&gt; the roster &lt;&lt;</h1>
-    <p class="page-lede">
-      the swimmers who make this club a real thing. if you want to be on this list next year,
-      <a href="/join">come join</a>.
-    </p>
-  </div>
-
-  <ul class="roster">
-    {roster.map(p => (
-      <li class="roster__item block">
-        <div class="roster__name">{p.name}</div>
-        {p.role && <div class="roster__role">{p.role}</div>}
-        {p.year && <div class="roster__year">class of {p.year}</div>}
-      </li>
-    ))}
-  </ul>
-
-  <div class="block">
-    <h2 class="roster__section">faculty advisor</h2>
-    <div class="roster__advisor">
-      <div class="roster__name">{advisor.name}</div>
-      <div class="roster__role">{advisor.role}</div>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">The team</p>
+      <h1 class="display">Roster</h1>
+      <p class="lede">The swimmers who make this club happen. Want to be on this list? <a href="/join">Come join.</a></p>
     </div>
-  </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <ul class="people">
+        {roster.map((p) => (
+          <li class="person card">
+            {p.photo
+              ? <img src={p.photo} alt="" class="person__avatar" />
+              : <div class="person__avatar person__avatar--initials" aria-hidden="true">{initials(p.name)}</div>}
+            <div class="person__name">{p.name}</div>
+            {p.role && <div class="person__role">{p.role}</div>}
+            {p.year && <div class="person__role">Class of {p.year}</div>}
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="display advisor-title">Faculty advisor</h2>
+      <ul class="people">
+        <li class="person card">
+          <div class="person__avatar person__avatar--initials" aria-hidden="true">{initials(advisor.name.replace('Professor ', ''))}</div>
+          <div class="person__name">{advisor.name}</div>
+          <div class="person__role">{advisor.role}</div>
+        </li>
+      </ul>
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  .page-title {
-    font-size: 28px;
-    color: var(--navy-deep);
-    margin: 0 0 6px;
-    letter-spacing: 2px;
-  }
-  .page-lede { margin: 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
-
-  .roster {
+  .people {
     list-style: none;
     padding: 0;
-    margin: 10px 0;
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 8px;
+    gap: 20px;
   }
-  .roster__item {
-    margin: 0;
-    text-align: center;
+  .person { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .person__avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
   }
-  .roster__name {
-    font-family: Impact, 'Arial Black', sans-serif;
-    font-size: 18px;
-    letter-spacing: 1px;
-    color: var(--navy-deep);
+  .person__avatar--initials {
+    background: var(--navy);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 34px;
   }
-  .roster__role {
-    font-size: 11px;
-    color: var(--navy-deep);
-    margin-top: 4px;
-    font-style: italic;
+  .person__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.15;
   }
-  .roster__year {
-    font-size: 11px;
-    color: var(--navy-deep);
-    margin-top: 2px;
-  }
-  .roster__section {
-    font-family: Impact, 'Arial Black', sans-serif;
-    color: var(--navy-deep);
-    margin: 0 0 6px;
-    font-size: 16px;
-    letter-spacing: 1px;
-  }
-  .roster__advisor { text-align: center; }
+  .person__role { font-size: 15px; color: var(--muted); }
+  .advisor-title { font-size: 36px; margin: 64px 0 24px; }
 </style>
